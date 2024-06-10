@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Profile</title>
+</head>
+<body>
+    <h1>Create Profile</h1>
+    <form id="create-profile-form">
+        <input type="hidden" id="uid" value="{{uid}}" />
+        <input type="text" id="displayName" name="displayName" placeholder="Display Name" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <button type="submit">Create Profile</button>
+    </form>
+    <script>
+        document.getElementById('create-profile-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const uid = document.getElementById('uid').value;
+            const displayName = document.getElementById('displayName').value;
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/create-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ uid, displayName, email })
+                });
+
+                if (response.ok) {
+                    window.location.href = '/home';
+                } else {
+                    console.error('Profile creation failed');
+                }
+            } catch (error) {
+                console.error('Error creating profile:', error);
+            }
+        });
+    </script>
+</body>
+</html>

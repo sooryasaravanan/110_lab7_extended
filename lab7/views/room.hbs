@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{roomName}}</title>
+    <link rel="stylesheet" href="/css/Room-style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>{{roomName}}</h1>
+        <form action="/{{roomName}}/messages" method="post">
+            <input type="text" name="nickname" value="{{user.displayName}}" readonly>
+            <input type="text" name="message" placeholder="Enter message" required>
+            <button type="submit">Send</button>
+        </form>
+
+        <form action="/{{roomName}}/search" method="get">
+            <input type="text" name="query" placeholder="Search messages" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <h2>Messages:</h2>
+        <div class="message-list">
+            <ul>
+                {{#each messages}}
+                    <li>
+                        <strong>{{this.nickname}}</strong>
+                        <p>{{this.body}}</p>
+                        <!-- Add Edit Button -->
+                        <button onclick="showEditForm('{{../roomName}}', '{{this._id}}', '{{this.body}}')">Edit</button>
+                        <!-- Edit Form -->
+                        <form id="edit-form-{{this._id}}" action="/{{../roomName}}/messages/{{this._id}}/edit" method="post" style="display:none;">
+                            <input type="text" name="newMessage" value="{{this.body}}" required>
+                            <button type="submit">Update</button>
+                        </form>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <script src="/js/room.js"></script>
+    <script>
+        function showEditForm(roomName, messageId, messageBody) {
+            const form = document.getElementById(`edit-form-${messageId}`);
+            form.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

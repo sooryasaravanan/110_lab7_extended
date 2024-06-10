@@ -1,0 +1,38 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('https://www.drumangle.com/sandbox/wp/21813/wp-content/uploads/2014/01/Login-Screen-Background-Wood-5.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  .login-container {
+    text-align: center;
+  }
+  
+  .button-login {
+    background-color: #B28AFB; /* Set the background color to a light purple */
+    border: none; /* Remove border */
+    color: white; /* Set the text color to white */
+    padding: 10px 20px; /* Add some padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from text */
+    display: inline-block; /* Make the button inline-block */
+    font-size: 16px; /* Set the font size */
+    border-radius: 25px; /* Round the corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s; /* Add transition for background color */
+    margin-top: 10px; /* Add some space above the button */
+  }
+  
+  .button-login:hover {
+    background-color: #9b70e2; /* Darken the background color on hover */
+  }
+  
+  .title {
+    font-size: 24px; /* Adjust the font size of the title */
+    font-weight: bold; /* Make the title bold */
+    margin-bottom: 20px; /* Add some space below the title */
+  }
