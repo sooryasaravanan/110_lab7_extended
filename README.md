@@ -147,3 +147,10 @@ This application includes validation and sanitization to ensure data integrity a
         }
     );
     ```
+
+
+## Admin Functionality
+
+An admin user can delete users from the application. If the logged-in user's email is `sooryasarva@gmail.com`, they will be redirected to the admin page upon login.
+To delete a user, the admin can use the delete user functionality on the admin page.
+
