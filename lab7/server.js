@@ -18,8 +18,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts/' }));
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', hbs({
+    extname: 'hbs',
+    defaultLayout: 'layout',
+    layoutsDir: __dirname + '/views/layouts/',
+    helpers: {
+        escape: (text) => {
+            if (typeof text !== 'string') {
+                return text;
+            }
+            return text.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+        }
+    }
+}));app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => res.redirect('/login'));
