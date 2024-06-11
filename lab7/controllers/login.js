@@ -26,7 +26,12 @@ async function loginHandler(req, res) {
         if (!userDoc.exists) {
             return res.redirect('/create-profile'); 
         } else {
-            return res.redirect('/home'); 
+            const user = userDoc.data();
+            if (user.email === 'sooryasarva@gmail.com') {
+                return res.redirect('/admin');
+            } else {
+                return res.redirect('/home');
+            }
         }
     } catch (error) {
         console.error('Error verifying ID token:', error);
@@ -46,7 +51,11 @@ async function createProfileHandler(req, res) {
         email,
         uid
     });
-    res.redirect('/home');
+    if (email === 'sooryasarva@gmail.com') {
+        res.redirect('/admin');
+    } else {
+        res.redirect('/home');
+    }
 }
 
 function renderCreateProfilePage(req, res) {
