@@ -36,13 +36,17 @@
             </ul>
         </div>
     </div>
-    <script src="/js/room.js"></script>
+    <script src="/controllers/room.js"></script>
     <script>
         function showEditForm(roomName, messageId, messageBody) {
             const form = document.getElementById(`edit-form-${messageId}`);
             form.style.display = 'block';
             form.querySelector('input[name="newMessage"]').value = messageBody.replace(/'/g, '&#39;');
         }
+
+        setInterval(() => {
+            window.location.reload();
+        }, 7000); // Reload the page every 7 seconds
     </script>
 </body>
 </html>
