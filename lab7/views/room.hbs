@@ -14,7 +14,7 @@
             <button type="submit">Send</button>
         </form>
 
-        <form id="search-form" action="/{{roomName}}/search" method="get">
+        <form id="search-form">
             <input type="text" name="query" placeholder="Search messages" required>
             <button type="submit">Search</button>
         </form>
@@ -59,6 +59,19 @@
             }
         }
 
+        async function searchMessages(query) {
+            try {
+                const response = await fetch(`/api/${roomName}/search?query=${encodeURIComponent(query)}`);
+                if (response.ok) {
+                    const messages = await response.json();
+                    updateMessageList(messages);
+                    console.log('Search completed');
+                }
+            } catch (error) {
+                console.error('Error searching messages:', error);
+            }
+        }
+
         function updateMessageList(messages) {
             const messageList = document.getElementById('messages');
             messageList.innerHTML = '';
@@ -91,8 +104,14 @@
             });
         }
 
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = event.target.query.value;
+            searchMessages(query);
+        });
+
         fetchMessages();
-        setInterval(fetchMessages, 7000);
+        setInterval(fetchMessages, 10000); // Fetch messages every second
     </script>
 </body>
 </html>

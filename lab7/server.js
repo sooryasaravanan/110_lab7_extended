@@ -16,8 +16,13 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css');
+        }
+    }
+}));
 app.engine('hbs', hbs({
     extname: 'hbs',
     defaultLayout: 'layout',
@@ -98,20 +103,16 @@ app.post('/logout', (req, res) => {
     res.status(200).send('Logout successful');
 });
 
-app.get('/:roomName/search', async (req, res) => {
+app.get('/api/:roomName/search', async (req, res) => {
     const { roomName } = req.params;
     const { query } = req.query;
 
     const db = await connectToDatabase(roomName);
     const searchResults = await db.collection('messages').find({ body: new RegExp(query, 'i') }).toArray();
 
-    res.render('room', {
-        title: roomName,
-        roomName,
-        messages: searchResults,
-        user: req.user
-    });
+    res.json(searchResults);
 });
+
 
 app.get('/:roomName', getRoom);
 app.post('/create', createRoom);
