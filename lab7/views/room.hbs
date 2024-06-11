@@ -28,7 +28,7 @@
                         <p>{{{this.body}}}</p>
                         <button onclick="showEditForm('{{../roomName}}', '{{this._id}}', '{{escape this.body}}')">Edit</button>
                         <form id="edit-form-{{this._id}}" action="/{{../roomName}}/messages/{{this._id}}/edit" method="post" style="display:none;">
-                            <input type="text" name="newMessage" value="{{this.body}}" >
+                            <input type="text" name="newMessage" value="{{escape this.body}}" required>
                             <button type="submit">Update</button>
                         </form>
                     </li>
@@ -43,7 +43,7 @@
         function showEditForm(roomName, messageId, messageBody) {
             const form = document.getElementById(`edit-form-${messageId}`);
             form.style.display = 'block';
-            form.querySelector('input[name="newMessage"]').value = messageBody.replace(/'/g, '&#39;');
+            form.querySelector('input[name="newMessage"]').value = messageBody.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
         }
 
         async function fetchMessages() {
@@ -84,7 +84,7 @@
                     <p>${escapeHtml(message.body)}</p>
                     <button onclick="showEditForm('${roomName}', '${message._id}', '${escapeHtml(message.body)}')">Edit</button>
                     <form id="edit-form-${message._id}" action="/${roomName}/messages/${message._id}/edit" method="post" style="display:none;">
-                        <input type="text" name="newMessage" value="${escapeHtml(message.body)}" >
+                        <input type="text" name="newMessage" value="${escapeHtml(message.body)}" required>
                         <button type="submit">Update</button>
                     </form>
                 `;
