@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Page</title>
-    <link rel="stylesheet" href="/css/Admin-style.css"> <!-- Ensure this path is correct -->
+    <link rel="stylesheet" href="/css/Admin-style.css"> 
+    <script src="/js/logout.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -21,7 +22,7 @@
             {{/each}}
         </ul>
         <form id="logout-form" action="/logout" method="post">
-            <button type="submit">Logout</button>
+            <button type="submit" id="logout-button">Logout</button>
         </form>
     </div>
 </body>
