@@ -2,31 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{title}}</title>
-    <link rel="stylesheet" href="/css/admin-style.css">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="/css/Admin-style.css"> <!-- Ensure this path is correct -->
 </head>
 <body>
     <div class="container">
-        <h1>{{title}}</h1>
-        <button id="logout-button">Logout</button>
-
-        <h2>Users:</h2>
-        <div class="user-list">
-            <ul>
-                {{#each users}}
-                    <li class="user-item">
-                        <div class="user-info">
-                            <strong>{{this.displayName}}</strong>
-                            <span>{{this.email}}</span>
-                        </div>
-                        <form action="/admin/users/{{this.uid}}/delete" method="post" style="display:inline;">
-                            <button type="submit" class="delete-button">Delete</button>
-                        </form>
-                    </li>
-                {{/each}}
-            </ul>
-        </div>
+        <h1>Admin Page</h1>
+        <h2>List of Users:</h2>
+        <ul>
+            {{#each users}}
+            <li>
+                {{this.displayName}} ({{this.email}})
+                <form action="/admin/delete-user" method="post" style="display:inline;">
+                    <input type="hidden" name="uid" value="{{this.uid}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            {{/each}}
+        </ul>
+        <form id="logout-form" action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
     </div>
-    <script src="/js/logout.js"></script>
 </body>
 </html>
