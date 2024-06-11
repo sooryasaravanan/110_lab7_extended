@@ -28,7 +28,7 @@
                         <p>{{{this.body}}}</p>
                         <button onclick="showEditForm('{{../roomName}}', '{{this._id}}', '{{escape this.body}}')">Edit</button>
                         <form id="edit-form-{{this._id}}" action="/{{../roomName}}/messages/{{this._id}}/edit" method="post" style="display:none;">
-                            <input type="text" name="newMessage" value="{{this.body}}" required>
+                            <input type="text" name="newMessage" value="{{this.body}}" >
                             <button type="submit">Update</button>
                         </form>
                     </li>
@@ -84,7 +84,7 @@
                     <p>${escapeHtml(message.body)}</p>
                     <button onclick="showEditForm('${roomName}', '${message._id}', '${escapeHtml(message.body)}')">Edit</button>
                     <form id="edit-form-${message._id}" action="/${roomName}/messages/${message._id}/edit" method="post" style="display:none;">
-                        <input type="text" name="newMessage" value="${escapeHtml(message.body)}" required>
+                        <input type="text" name="newMessage" value="${escapeHtml(message.body)}" >
                         <button type="submit">Update</button>
                     </form>
                 `;
