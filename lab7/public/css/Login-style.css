@@ -13,26 +13,26 @@ body, html {
   }
   
   .button-login {
-    background-color: #B28AFB; /* Set the background color to a light purple */
-    border: none; /* Remove border */
-    color: white; /* Set the text color to white */
-    padding: 10px 20px; /* Add some padding */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline from text */
-    display: inline-block; /* Make the button inline-block */
-    font-size: 16px; /* Set the font size */
-    border-radius: 25px; /* Round the corners */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s; /* Add transition for background color */
-    margin-top: 10px; /* Add some space above the button */
+    background-color: #B28AFB; 
+    border: none; 
+    color: white; 
+    padding: 10px 20px; 
+    text-align: center;
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    margin-top: 10px; 
   }
   
   .button-login:hover {
-    background-color: #9b70e2; /* Darken the background color on hover */
+    background-color: #9b70e2; 
   }
   
   .title {
-    font-size: 24px; /* Adjust the font size of the title */
-    font-weight: bold; /* Make the title bold */
-    margin-bottom: 20px; /* Add some space below the title */
+    font-size: 24px; 
+    font-weight: bold; 
+    margin-bottom: 20px; 
   }

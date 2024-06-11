@@ -1,10 +1,9 @@
 const { connectToDatabase } = require('../db');
-const { ObjectId } = require('mongodb'); // Ensure this import is correct
+const { ObjectId } = require('mongodb'); 
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('../serviceAccountKey.json'); // Ensure the path is correct
+const serviceAccount = require('../serviceAccountKey.json'); 
 
-// Initialize Firebase Admin SDK
 if (!getApps().length) {
     initializeApp({
         credential: cert(serviceAccount),
@@ -21,12 +20,11 @@ function isValidRoomName(roomName) {
 
 async function getRoom(req, res) {
     const { roomName } = req.params;
-    const uid = req.cookies.uid; // Assuming the user UID is stored in a cookie after login
+    const uid = req.cookies.uid; 
     if (!isValidRoomName(roomName)) {
         return res.status(400).send('Invalid room name');
     }
 
-    // Fetch user display name from Firestore
     const userDocRef = firestore.collection('users').doc(uid);
     const userDoc = await userDocRef.get();
     const user = userDoc.exists ? userDoc.data() : null;
@@ -53,11 +51,10 @@ async function createRoom(req, res) {
     res.redirect(`/${roomName}`);
 }
 
-// Add search functionality
 async function searchMessages(req, res) {
     const { roomName } = req.params;
     const { query } = req.query;
-    const uid = req.cookies.uid; // Assuming the user UID is stored in a cookie after login
+    const uid = req.cookies.uid; 
 
     if (!isValidRoomName(roomName)) {
         return res.status(400).send('Invalid room name');
@@ -78,11 +75,10 @@ async function searchMessages(req, res) {
     res.render('room', { title: `Room: ${roomName}`, roomName, messages: searchResults, user });
 }
 
-// Add edit functionality
 async function editMessage(req, res) {
     const { roomName, messageId } = req.params;
     const { newMessage } = req.body;
-    const uid = req.cookies.uid; // Assuming the user UID is stored in a cookie after login
+    const uid = req.cookies.uid; 
 
     const db = await connectToDatabase(roomName);
     const message = await db.collection('messages').findOne({ _id: new ObjectId(messageId) });
@@ -91,17 +87,21 @@ async function editMessage(req, res) {
         return res.status(404).send('Message not found');
     }
 
-    console.log('Message userId:', message.userId); // Debugging
-    console.log('Current user UID:', uid); // Debugging
+    console.log('Message userId:', message.userId); 
+    console.log('Current user UID:', uid); 
 
     if (message.userId !== uid) {
         return res.status(403).send('You are not authorized to edit this message');
     }
 
-    await db.collection('messages').updateOne(
-        { _id: new ObjectId(messageId) },
-        { $set: { body: newMessage } }
-    );
+    if (!newMessage.trim()) {
+        await db.collection('messages').deleteOne({ _id: new ObjectId(messageId) });
+    } else {
+        await db.collection('messages').updateOne(
+            { _id: new ObjectId(messageId) },
+            { $set: { body: newMessage } }
+        );
+    }
 
     res.redirect(`/${roomName}`);
 }

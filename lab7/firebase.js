@@ -1,4 +1,3 @@
-// firebase.js
 const { initializeApp } = require("firebase/app");
 const { getAuth, GoogleAuthProvider, signInWithPopup } = require("firebase/auth");
 const { getFirestore, doc, getDoc, setDoc } = require("firebase/firestore");

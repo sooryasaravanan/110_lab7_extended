@@ -1,9 +1,8 @@
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('../serviceAccountKey.json'); // Ensure the path is correct
+const serviceAccount = require('../serviceAccountKey.json'); 
 
-// Initialize Firebase Admin SDK
 if (!getApps().length) {
     initializeApp({
         credential: cert(serviceAccount),
@@ -22,12 +21,12 @@ async function loginHandler(req, res) {
         const userDocRef = firestore.collection('users').doc(uid);
         const userDoc = await userDocRef.get();
 
-        res.cookie('uid', uid); // Set UID in cookies
+        res.cookie('uid', uid); 
 
         if (!userDoc.exists) {
-            return res.redirect('/create-profile'); // Redirect to create profile if user does not exist
+            return res.redirect('/create-profile'); 
         } else {
-            return res.redirect('/home'); // Redirect to home if user exists
+            return res.redirect('/home'); 
         }
     } catch (error) {
         console.error('Error verifying ID token:', error);
@@ -51,7 +50,7 @@ async function createProfileHandler(req, res) {
 }
 
 function renderCreateProfilePage(req, res) {
-    const uid = req.cookies.uid; // Assuming the user UID is stored in a cookie after login
+    const uid = req.cookies.uid; 
     res.render('create-profile', { title: 'Create Profile', uid });
 }
 
