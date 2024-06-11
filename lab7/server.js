@@ -32,6 +32,22 @@ app.get('/admin', async (req, res) => {
     res.render('admin', { title: 'Admin Page', users });
 });
 
+app.post('/admin/delete-user', async (req, res) => {
+    const { uid } = req.body;
+
+    if (!uid || typeof uid !== 'string' || uid.trim() === '') {
+        return res.status(400).send('Invalid user ID');
+    }
+
+    try {
+        await firestore.collection('users').doc(uid).delete();
+        res.redirect('/admin');
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).send('Error deleting user');
+    }
+});
+
 
 app.get('/create-profile', renderCreateProfilePage); 
 app.post('/create-profile', 

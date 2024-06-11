@@ -3,27 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
-    <link rel="stylesheet" href="/css/admin-style.css">
 </head>
 <body>
     <h1>{{title}}</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Display Name</th>
-                <th>Email</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each users}}
-            <tr>
-                <td>{{this.displayName}}</td>
-                <td>{{this.email}}</td>
-                <td>{{this.createdAt}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    <ul>
+        {{#each users}}
+            <li>
+                {{this.displayName}} ({{this.email}})
+                <form action="/admin/delete-user" method="post" style="display:inline;">
+                    <input type="hidden" name="uid" value="{{this.uid}}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {{/each}}
+    </ul>
 </body>
 </html>
