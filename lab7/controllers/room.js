@@ -60,7 +60,6 @@ async function searchMessages(req, res) {
         return res.status(400).send('Invalid room name');
     }
 
-    // Fetch user display name from Firestore
     const userDocRef = firestore.collection('users').doc(uid);
     const userDoc = await userDocRef.get();
     const user = userDoc.exists ? userDoc.data() : null;
