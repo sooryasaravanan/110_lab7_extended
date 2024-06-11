@@ -5,7 +5,7 @@ const path = require('path');
 const { body, validationResult } = require('express-validator');
 
 const { homeHandler } = require('./controllers/home.js');
-const { getRoom, createRoom, searchMessages, editMessage } = require('./controllers/room.js'); 
+const { getRoom, createRoom, searchMessages, editMessage, fetchMessages } = require('./controllers/room.js'); 
 const { loginHandler, renderLoginPage, createProfileHandler, renderCreateProfilePage } = require('./controllers/login.js');
 const { connectToDatabase } = require('./db.js'); 
 const { firestore } = require('./firebaseAdmin'); 
@@ -130,5 +130,14 @@ app.post('/:roomName/messages', async (req, res) => {
 });
 
 app.post('/:roomName/messages/:messageId/edit', editMessage);
+
+
+app.get('/api/:roomName/messages', async (req, res) => {
+    const { roomName } = req.params;
+    const db = await connectToDatabase(roomName);
+    const messages = await db.collection('messages').find().toArray();
+    res.json(messages);
+});
+
 
 app.listen(port, () => console.log(`Server listening on http://localhost:${port}`));

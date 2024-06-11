@@ -1,8 +1,8 @@
 const { connectToDatabase } = require('../db');
-const { ObjectId } = require('mongodb'); 
+const { ObjectId } = require('mongodb');
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('../serviceAccountKey.json'); 
+const serviceAccount = require('../serviceAccountKey.json');
 
 if (!getApps().length) {
     initializeApp({
@@ -20,7 +20,7 @@ function isValidRoomName(roomName) {
 
 async function getRoom(req, res) {
     const { roomName } = req.params;
-    const uid = req.cookies.uid; 
+    const uid = req.cookies.uid;
     if (!isValidRoomName(roomName)) {
         return res.status(400).send('Invalid room name');
     }
@@ -54,7 +54,7 @@ async function createRoom(req, res) {
 async function searchMessages(req, res) {
     const { roomName } = req.params;
     const { query } = req.query;
-    const uid = req.cookies.uid; 
+    const uid = req.cookies.uid;
 
     if (!isValidRoomName(roomName)) {
         return res.status(400).send('Invalid room name');
@@ -77,7 +77,7 @@ async function searchMessages(req, res) {
 async function editMessage(req, res) {
     const { roomName, messageId } = req.params;
     const { newMessage } = req.body;
-    const uid = req.cookies.uid; 
+    const uid = req.cookies.uid;
 
     const db = await connectToDatabase(roomName);
     const message = await db.collection('messages').findOne({ _id: new ObjectId(messageId) });
@@ -86,8 +86,8 @@ async function editMessage(req, res) {
         return res.status(404).send('Message not found');
     }
 
-    console.log('Message userId:', message.userId); 
-    console.log('Current user UID:', uid); 
+    console.log('Message userId:', message.userId);
+    console.log('Current user UID:', uid);
 
     if (message.userId !== uid) {
         return res.status(403).send('You are not authorized to edit this message');

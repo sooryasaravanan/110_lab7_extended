@@ -8,24 +8,24 @@
 <body>
     <div class="container">
         <h1>{{roomName}}</h1>
-        <form action="/{{roomName}}/messages" method="post">
+        <form id="send-form" action="/{{roomName}}/messages" method="post">
             <input type="text" name="nickname" value="{{user.displayName}}" readonly>
             <input type="text" name="message" placeholder="Enter message" required>
             <button type="submit">Send</button>
         </form>
 
-        <form action="/{{roomName}}/search" method="get">
+        <form id="search-form" action="/{{roomName}}/search" method="get">
             <input type="text" name="query" placeholder="Search messages" required>
             <button type="submit">Search</button>
         </form>
 
         <h2>Messages:</h2>
         <div class="message-list">
-            <ul>
+            <ul id="messages">
                 {{#each messages}}
-                    <li>
+                    <li id="message-{{this._id}}">
                         <strong>{{this.nickname}}</strong>
-                        <p>{{{this.body}}}</p> 
+                        <p>{{{this.body}}}</p>
                         <button onclick="showEditForm('{{../roomName}}', '{{this._id}}', '{{escape this.body}}')">Edit</button>
                         <form id="edit-form-{{this._id}}" action="/{{../roomName}}/messages/{{this._id}}/edit" method="post" style="display:none;">
                             <input type="text" name="newMessage" value="{{this.body}}" required>
@@ -36,17 +36,63 @@
             </ul>
         </div>
     </div>
-    <script src="/controllers/room.js"></script>
+
     <script>
+        const roomName = '{{roomName}}';
+
         function showEditForm(roomName, messageId, messageBody) {
             const form = document.getElementById(`edit-form-${messageId}`);
             form.style.display = 'block';
             form.querySelector('input[name="newMessage"]').value = messageBody.replace(/'/g, '&#39;');
         }
 
-        setInterval(() => {
-            window.location.reload();
-        }, 7000); // Reload the page every 7 seconds
+        async function fetchMessages() {
+            try {
+                const response = await fetch(`/api/${roomName}/messages`);
+                if (response.ok) {
+                    const messages = await response.json();
+                    updateMessageList(messages);
+                    console.log('Fetched');
+                }
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        }
+
+        function updateMessageList(messages) {
+            const messageList = document.getElementById('messages');
+            messageList.innerHTML = '';
+
+            messages.forEach(message => {
+                const messageItem = document.createElement('li');
+                messageItem.id = `message-${message._id}`;
+                messageItem.innerHTML = `
+                    <strong>${message.nickname}</strong>
+                    <p>${escapeHtml(message.body)}</p>
+                    <button onclick="showEditForm('${roomName}', '${message._id}', '${escapeHtml(message.body)}')">Edit</button>
+                    <form id="edit-form-${message._id}" action="/${roomName}/messages/${message._id}/edit" method="post" style="display:none;">
+                        <input type="text" name="newMessage" value="${escapeHtml(message.body)}" required>
+                        <button type="submit">Update</button>
+                    </form>
+                `;
+                messageList.appendChild(messageItem);
+            });
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/[&<>"']/g, function (m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
+        }
+
+        fetchMessages();
+        setInterval(fetchMessages, 7000);
     </script>
 </body>
 </html>
