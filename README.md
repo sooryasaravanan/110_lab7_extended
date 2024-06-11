@@ -78,13 +78,13 @@ This is a chatroom application built with Node.js, Express, MongoDB, and Firebas
 
     ```npm start```
 
-    The server will start on `http://localhost:8080`.
+    The server will start on `http://localhost:3000`.
 
 ## Usage
 
 1. **Login**
 
-    - Go to `http://localhost:8080/`.
+    - Go to `http://localhost:3000/`.
     - Log in using Google Authentication.
 
 2. **Create Profile**
